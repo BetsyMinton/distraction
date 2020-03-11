@@ -27,6 +27,9 @@ function checkChoice () {
         }
     }
 }
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    taskSprite.setFlag(SpriteFlag.Invisible, true)
+})
 controller.left.onEvent(ControllerButtonEvent.Released, function () {
     if (answerOn == 1) {
         choice = 3
@@ -57,6 +60,7 @@ controller.down.onEvent(ControllerButtonEvent.Released, function () {
 })
 function Level_Over () {
     answerOn = 0
+    music.stopAllSounds()
     mySprite.setImage(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -83,6 +87,7 @@ function Level_Over () {
 }
 function gameOver () {
     game.splash("Game Over")
+    game.showLongText("Your scores were- " + "baseline: " + Math.round(list[0] / Timer * 100) + "   Music: " + Math.round(list[1] / Timer * 100) + "    Notifications: " + Math.round(list[2] / Timer * 100) + "    Tasks: " + Math.round(list[3] / Timer * 100), DialogLayout.Center)
 }
 controller.right.onEvent(ControllerButtonEvent.Released, function () {
     if (answerOn == 1) {
@@ -99,8 +104,64 @@ controller.right.onEvent(ControllerButtonEvent.Released, function () {
     }
 })
 function tasks () {
-    game.showLongText("Carefully watch the arrows, remember the order in which they appear.  You also have to click on the ducks.", DialogLayout.Center)
-    for (let index = 0; index < 7; index++) {
+    game.showLongText("Carefully watch the arrows, remember the order in which they appear.  Push B when you see a duck.", DialogLayout.Center)
+    for (let index = 0; index < 2; index++) {
+        ChooseArrow = Math.randomRange(0, 3)
+        mySprite.setImage(arrows[ChooseArrow])
+        arrowList.push(ChooseArrow)
+        pause(1000)
+        mySprite.setImage(img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`)
+        pause(100)
+    }
+    taskSprite.setPosition(10, 10)
+    taskSprite.setFlag(SpriteFlag.Invisible, false)
+    mySprite.setVelocity(50, 50)
+    for (let index = 0; index < 3; index++) {
+        ChooseArrow = Math.randomRange(0, 3)
+        mySprite.setImage(arrows[ChooseArrow])
+        arrowList.push(ChooseArrow)
+        pause(1000)
+        mySprite.setImage(img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`)
+        pause(100)
+    }
+    taskSprite.setPosition(10, 10)
+    taskSprite.setFlag(SpriteFlag.Invisible, false)
+    taskSprite.setVelocity(50, 50)
+    for (let index = 0; index < 2; index++) {
         ChooseArrow = Math.randomRange(0, 3)
         mySprite.setImage(arrows[ChooseArrow])
         arrowList.push(ChooseArrow)
@@ -181,6 +242,7 @@ function MusicLevel () {
         music.ringTone(notesList[Math.randomRange(0, 6)])
         pause(100)
     }
+    music.stopAllSounds()
     console.log(arrowList)
     points = 0
     game.showLongText("Use the keypad to recreate the pattern", DialogLayout.Center)
@@ -341,6 +403,7 @@ let points = 0
 let arrowList: number[] = []
 let list: number[] = []
 let arrows: Image[] = []
+let taskSprite: Sprite = null
 let notificationSprite: Sprite = null
 let mySprite: Sprite = null
 let Score = 0
@@ -395,8 +458,9 @@ notificationSprite = sprites.create(img`
 . f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 `, SpriteKind.Enemy)
+notificationSprite.setPosition(80, 15)
 notificationSprite.setFlag(SpriteFlag.Invisible, true)
-let taskSprite = sprites.create(img`
+taskSprite = sprites.create(img`
 . . . . . . . . . . b 5 b . . . 
 . . . . . . . . . b 5 b . . . . 
 . . . . . . b b b b b b . . . . 
@@ -415,6 +479,8 @@ b b c c c d d d d 5 5 5 b b . .
 . . . c c c c c c c c b b . . . 
 `, SpriteKind.Projectile)
 taskSprite.setFlag(SpriteFlag.Invisible, true)
+taskSprite.setFlag(SpriteFlag.StayInScreen, true)
+taskSprite.setFlag(SpriteFlag.BounceOnWall, true)
 arrows = [img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
