@@ -3,6 +3,11 @@ controller.up.onEvent(ControllerButtonEvent.Released, function () {
         choice = 0
         mySprite.setImage(arrows[choice])
         checkChoice()
+    } else if (answerOn == 2) {
+        choice = 0
+        mySprite.setImage(arrows[choice])
+        music.ringTone(notesList[Math.randomRange(0, 6)])
+        checkChoice()
     } else {
     	
     }
@@ -22,17 +27,16 @@ function checkChoice () {
         }
     }
 }
-function Song () {
-    pause(500)
-    while (list.length != 0) {
-        music.ringTone(notesList[Math.randomRange(0, 6)])
-    }
-}
 controller.left.onEvent(ControllerButtonEvent.Released, function () {
     if (answerOn == 1) {
         choice = 3
         mySprite.setImage(arrows[choice])
         checkChoice()
+    } else if (answerOn == 2) {
+        choice = 3
+        mySprite.setImage(arrows[choice])
+        checkChoice()
+        music.ringTone(notesList[Math.randomRange(0, 6)])
     } else {
     	
     }
@@ -40,6 +44,11 @@ controller.left.onEvent(ControllerButtonEvent.Released, function () {
 controller.down.onEvent(ControllerButtonEvent.Released, function () {
     if (answerOn == 1) {
         choice = 1
+        mySprite.setImage(arrows[choice])
+        checkChoice()
+    } else if (answerOn == 2) {
+        choice = 1
+        music.ringTone(notesList[Math.randomRange(0, 6)])
         mySprite.setImage(arrows[choice])
         checkChoice()
     } else {
@@ -77,6 +86,11 @@ function gameOver () {
 }
 controller.right.onEvent(ControllerButtonEvent.Released, function () {
     if (answerOn == 1) {
+        choice = 2
+        mySprite.setImage(arrows[choice])
+        checkChoice()
+    } else if (answerOn == 2) {
+        music.ringTone(notesList[Math.randomRange(0, 6)])
         choice = 2
         mySprite.setImage(arrows[choice])
         checkChoice()
@@ -170,8 +184,7 @@ function MusicLevel () {
     console.log(arrowList)
     points = 0
     game.showLongText("Use the keypad to recreate the pattern", DialogLayout.Center)
-    answerOn = 1
-    Song()
+    answerOn = 2
     Start_time = game.runtime()
 }
 function notifications () {
@@ -280,8 +293,8 @@ function notifications () {
     pause(100)
     console.log(arrowList)
     points = 0
-    game.showLongText("Use the keypad to recreate the pattern", DialogLayout.Center)
     answerOn = 1
+    game.showLongText("Use the keypad to recreate the pattern", DialogLayout.Center)
     Start_time = game.runtime()
 }
 function BaseLineLevel () {
