@@ -1,5 +1,5 @@
 {
-    "name": "Distraction",
+    "name": "notifications",
     "dependencies": {
         "device": "*"
     },
